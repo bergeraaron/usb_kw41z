@@ -25,7 +25,7 @@ rtscts=True
 included by <termios.h> */
 #define BAUDRATE B115200//115200
 /* change this definition for the correct port */
-#define MODEMDEVICE "/dev/ttyACM0"
+#define MODEMDEVICE "/dev/ttyACM1"
 #define _POSIX_SOURCE 1 /* POSIX compliant source */
 
 #define FALSE 0

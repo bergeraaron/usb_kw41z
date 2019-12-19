@@ -25,7 +25,7 @@ rtscts=True
 included by <termios.h> */
 #define BAUDRATE B115200//115200
 /* change this definition for the correct port */
-#define MODEMDEVICE "/dev/ttyACM0"
+#define MODEMDEVICE "/dev/ttyACM1"
 #define _POSIX_SOURCE 1 /* POSIX compliant source */
 #define CRTSCTS  020000000000 /*should be defined but isn't with the C99*/
 #define FALSE 0
@@ -120,89 +120,75 @@ main()
 
 //common against both zigbee and btle
 //seq 1
+/**/
  cmd[0][0] = 0x02;
- cmd[0][1] = 0x52;
- cmd[0][2] = 0x00;
+ cmd[0][1] = 0xA3;
+ cmd[0][2] = 0x08;
  cmd[0][3] = 0x00;
- cmd[0][4] = 0x00;
- cmd[0][5] = 0x52;
-
+ cmd[0][4] = 0xAB;
+ //seq 2
  cmd[1][0] = 0x02;
- cmd[1][1] = 0x52;
- cmd[1][2] = 0x00;
- cmd[1][3] = 0x00;
+ cmd[1][1] = 0x85;
+ cmd[1][2] = 0x09;
+ cmd[1][3] = 0x08;
  cmd[1][4] = 0x00;
  cmd[1][5] = 0x52;
-
- //seq 2
- cmd[2][0] = 0x02;
- cmd[2][1] = 0xA3;
- cmd[2][2] = 0x08;
- cmd[2][3] = 0x00;
- cmd[2][4] = 0x00;
- cmd[2][5] = 0xAB;
- cmd[2][6] = 0x02;
- cmd[2][7] = 0x85;
- cmd[2][8] = 0x09;
- cmd[2][9] = 0x08;
- cmd[2][10] = 0x00;
- cmd[2][11] = 0x52;
- cmd[2][12] = 0x00;
- cmd[2][13] = 0x00;
- cmd[2][14] = 0x00;
- cmd[2][15] = 0x00;
- cmd[2][16] = 0x00;
- cmd[2][17] = 0x00;
- cmd[2][18] = 0x00;
- cmd[2][19] = 0xD6;
+ cmd[1][6] = 0x00;
+ cmd[1][7] = 0x00;
+ cmd[1][8] = 0x00;
+ cmd[1][9] = 0x00;
+ cmd[1][10] = 0x00;
+ cmd[1][11] = 0x00;
+ cmd[1][12] = 0x00;
+ cmd[1][13] = 0xD6;
 
  //seq 3
+ cmd[2][0] = 0x02;
+ cmd[2][1] = 0x85;
+ cmd[2][2] = 0x09;
+ cmd[2][3] = 0x08;
+ cmd[2][4] = 0x00;
+ cmd[2][5] = 0x21;
+ cmd[2][6] = 0x0B;//CHAN
+ cmd[2][7] = 0x00;
+ cmd[2][8] = 0x00;
+ cmd[2][9] = 0x00;
+ cmd[2][10] = 0x00;
+ cmd[2][11] = 0x00;
+ cmd[2][12] = 0x00;
+ cmd[2][13] = 0xAE;
+
+ //seq 4
  cmd[3][0] = 0x02;
  cmd[3][1] = 0x85;
  cmd[3][2] = 0x09;
  cmd[3][3] = 0x08;
  cmd[3][4] = 0x00;
- cmd[3][5] = 0x21;
- cmd[3][6] = 0x0B;//CHAN
+ cmd[3][5] = 0x51;
+ cmd[3][6] = 0x01;
  cmd[3][7] = 0x00;
  cmd[3][8] = 0x00;
  cmd[3][9] = 0x00;
  cmd[3][10] = 0x00;
  cmd[3][11] = 0x00;
  cmd[3][12] = 0x00;
- cmd[3][13] = 0xAE;
-
- //seq 4
- cmd[4][0] = 0x02;
- cmd[4][1] = 0x85;
- cmd[4][2] = 0x09;
- cmd[4][3] = 0x08;
- cmd[4][4] = 0x00;
- cmd[4][5] = 0x51;
- cmd[4][6] = 0x01;
- cmd[4][7] = 0x00;
- cmd[4][8] = 0x00;
- cmd[4][9] = 0x00;
- cmd[4][10] = 0x00;
- cmd[4][11] = 0x00;
- cmd[4][12] = 0x00;
- cmd[4][13] = 0xD4;
+ cmd[3][13] = 0xD4;
 
  //seq 5
-  cmd[5][0] = 0x02;
-  cmd[5][1] = 0x85;
-  cmd[5][2] = 0x09;
-  cmd[5][3] = 0x08;
-  cmd[5][4] = 0x00;
-  cmd[5][5] = 0x52;
-  cmd[5][6] = 0x01;
-  cmd[5][7] = 0x00;
-  cmd[5][8] = 0x00;
-  cmd[5][9] = 0x00;
-  cmd[5][10] = 0x00;
-  cmd[5][11] = 0x00;
-  cmd[5][12] = 0x00;
-  cmd[5][13] = 0xD7;
+  cmd[4][0] = 0x02;
+  cmd[4][1] = 0x85;
+  cmd[4][2] = 0x09;
+  cmd[4][3] = 0x08;
+  cmd[4][4] = 0x00;
+  cmd[4][5] = 0x52;
+  cmd[4][6] = 0x01;
+  cmd[4][7] = 0x00;
+  cmd[4][8] = 0x00;
+  cmd[4][9] = 0x00;
+  cmd[4][10] = 0x00;
+  cmd[4][11] = 0x00;
+  cmd[4][12] = 0x00;
+  cmd[4][13] = 0xD7;
 
  //end
  cmd[9][0] = 0x02;
@@ -214,23 +200,39 @@ main()
  cmd[9][6] = 0x4F;
 
  int cmd_len[10];
- cmd_len[0]=6;
- cmd_len[1]=6;
- cmd_len[2]=20;
+ cmd_len[0]=5;
+ cmd_len[1]=14;
+ cmd_len[2]=14;
  cmd_len[3]=14;
  cmd_len[4]=14;
- cmd_len[5]=14;
-
+ 
  cmd_len[9]=7;
 
  int ctr = 0;
  int cmdctr = 0;
+/*
+ cmdctr = 9;
+   for(int xp=0;xp<cmd_len[cmdctr];xp++)
+    printf("%02X ",cmd[cmdctr][xp]);
+  printf("\n");
+ write(fd,cmd[cmdctr],cmd_len[cmdctr]);
+*/
+ cmdctr=0;
+/*
   for(int xp=0;xp<cmd_len[cmdctr];xp++)
     printf("%02X ",cmd[cmdctr][xp]);
   printf("\n");
- write(fd,cmd[0],cmd_len[cmdctr]);
- cmdctr++;
- while(1)
+ write(fd,cmd[cmdctr],cmd_len[cmdctr]);
+ usleep(1000);
+*/
+cmdctr++;
+
+for(int xp=0;xp<cmd_len[cmdctr];xp++)
+    printf("%02X ",cmd[cmdctr][xp]);
+printf("\n");
+write(fd,cmd[cmdctr],cmd_len[cmdctr]);
+
+while(1)
  {
         //printf("ctr:%d\n",ctr);
         res = read(fd,buf,255);
@@ -251,8 +253,9 @@ main()
                   printf("send next cmd:%d len:%d\n",cmdctr,cmd_len[cmdctr]);
                   for(int xp=0;xp<cmd_len[cmdctr];xp++)
                     printf("%02X ",cmd[cmdctr][xp]);
-                  printf("\n");
+                  printf(" ");
                   write(fd,cmd[cmdctr],cmd_len[cmdctr]);
+		  usleep(10);
                   cmdctr++;
                 }
                 ctr = 0;
